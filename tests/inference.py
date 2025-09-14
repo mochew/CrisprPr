@@ -35,22 +35,23 @@ def run_inference(encode_list, label_list, sg_list):
     # M_model = torch.jit.script(M_model)
     # M_model.save(f"/wuyingfu/CrisprPr/models/M_models/new_M_model{str(version)}.pt")
 
-    print(model_seed)
+    print(f"(2) Load M_model from ./models/M_models/new_M_model{str(model_seed)}.pt")
     M_model = torch.jit.load(f"./models/M_models/new_M_model{str(model_seed)}.pt") 
-    print(f"./models/M_models/new_M_model{str(model_seed)}.pt")
     M_model.to(device) 
     M_model.eval()
     print(M_model)
+    print("\n")
 
+    print(f"(3) Load D_model from ./models/D_models/new_D_model{str(model_seed)}.pt")
     D_model = torch.jit.load(f"./models/D_models/new_D_model{str(model_seed)}.pt") 
-    print(f"./models/D_models/new_D_model{str(model_seed)}.pt")
     D_model.to(device)
     D_model.eval()
     print(D_model)
-
+    print("\n")
     predict_list = []
     label_list = []
     sg_list = []
+    print("(4) Predicting..\n")
     for batch in test_loader:
         batch_inputs, batch_labels, batch_sgRNA = batch
         batch_inputs = batch_inputs.to(torch.int8).to(device)

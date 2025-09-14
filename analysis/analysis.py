@@ -6,6 +6,8 @@ import os
 from scipy.stats import pearsonr
 from scipy.spatial.distance import euclidean
 from utils.output import plot_matrix_rows, plot_sim_hotmap
+import warnings
+warnings.filterwarnings("ignore")
 
 def load_matrics(origin_matrix_path, update_matrix_base_path, seed_num):
     """
@@ -72,8 +74,9 @@ def visual_position_distributions(orig_mat, agg_update_mat, output_path):
     # orig_mat.to_csv("./analysis/DRICS_orign.csv", index=True)
     # agg_update_mat.to_csv("./analysis/DRICS_update.csv", index=True)
     plot_matrix_rows(orig_mat, 'origin', orig_output_path)
+    print(f"The mismatch distribution map for each position in the original embedding space has been saved in {orig_output_path}")
     plot_matrix_rows(agg_update_mat, 'update', update_output_path)
-
+    print(f"The mismatch distribution map for each position in the updated embedding space has been saved in {update_output_path}")
 def vector_similarity(x, y, alpha=0.5):
     """
     Compute a blended similarity between two vectors by combining
@@ -117,9 +120,12 @@ def visual_mismatch_similarity(orig_mat, agg_update_mat, output_path):
     seed_orig_sim = compute_mismatch_similarity_matrix(seed_orig_mat)
     # seed_orig_sim.to_csv("./analysis/seed_orig_sim_DRICS.csv", index=True)
     plot_sim_hotmap(seed_orig_sim, "seed origin", output_path+"origin_seed_bp_sim.png", 0, 1)
+    print(f"The heatmap of the mismatch distribution similarity in the seed region of the original embedding space has been saved in {output_path}origin_seed_bp_sim.png")
+
     seed_update_sim = compute_mismatch_similarity_matrix(seed_final_mat)
     # seed_update_sim.to_csv("./analysis/seed_update_sim_DRICS.csv", index=True)
     plot_sim_hotmap(seed_update_sim, "seed update", output_path+"update_seed_bp_sim.png", 0,1)
+    print(f"The heatmap of the mismatch distribution similarity in the seed region of the updated embedding space has been saved in {output_path}update_seed_bp_sim.png")
 
     Nseed_orig_mat = orig_mat.iloc[13:, :]
     Nseed_update_mat = agg_update_mat.iloc[13:-1, :]
@@ -127,9 +133,12 @@ def visual_mismatch_similarity(orig_mat, agg_update_mat, output_path):
     Nseed_orig_sim = compute_mismatch_similarity_matrix(Nseed_orig_mat)
     # Nseed_orig_sim.to_csv("./analysis/Nseed_orig_sim_DRICS.csv", index=True)
     plot_sim_hotmap(Nseed_orig_sim, "Nseed origin", output_path+"origin_Nseed_bp_sim.png", 0.2, 1)
+    print(f"The heatmap of the mismatch distribution similarity in the non-seed region of the original embedding space has been saved in {output_path}origin_Nseed_bp_sim.png")
+
     Nseed_update_sim = compute_mismatch_similarity_matrix(Nseed_update_mat)
     # Nseed_update_sim.to_csv("./analysis/Nseed_update_sim_DRICS.csv", index=True)
     plot_sim_hotmap(Nseed_update_sim, "Nseed update", output_path+"update_Nseed_bp_sim.png", 0.2, 1)
+    print(f"The heatmap of the mismatch distribution similarity in the non-seed region of the updated embedding space has been saved in {output_path}update_Nseed_bp_sim.png")
 
 
 

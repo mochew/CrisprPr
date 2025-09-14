@@ -34,6 +34,7 @@ def load_input(args):
         file_path = Path(args.input_file)
         if not file_path.exists():
             raise FileNotFoundError(f"Input file not found: {file_path}")
+        print("(1) Loading data...")
         encode_list, label_list, sg_list = read_pairs_from_csv(file_path)
         predict_list, label_list, sg_list, test_sg_dict = run_inference(encode_list, label_list, sg_list)
 
@@ -50,6 +51,7 @@ def load_input(args):
         for seq, name in [(sg, "sg"), (off, "off")]:
             if len(seq) not in (23, 24):
                 raise ValueError(f"--{name} length={len(seq)} is invalid, must be 23 or 24.")
+        print("(1) Encoding data...")
         encode_list =[basepair_2_id_encode(sg, off)]
         label_list = [-1]
         sg_list = [sg[:-3]]

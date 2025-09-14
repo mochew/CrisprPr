@@ -69,8 +69,8 @@ def visual_position_distributions(orig_mat, agg_update_mat, output_path):
     """
     orig_output_path = output_path + 'orig_mis_dis.png'
     update_output_path = output_path + 'update_mis_dis.png'
-    orig_mat.to_csv("/wuyingfu/github/CrisprPr/analysis/DRICS_orign.csv", index=True)
-    agg_update_mat.to_csv("/wuyingfu/github/CrisprPr/analysis/DRICS_update.csv", index=True)
+    # orig_mat.to_csv("./analysis/DRICS_orign.csv", index=True)
+    # agg_update_mat.to_csv("./analysis/DRICS_update.csv", index=True)
     plot_matrix_rows(orig_mat, 'origin', orig_output_path)
     plot_matrix_rows(agg_update_mat, 'update', update_output_path)
 
@@ -115,20 +115,20 @@ def visual_mismatch_similarity(orig_mat, agg_update_mat, output_path):
     seed_final_mat = agg_update_mat.iloc[3:13, :]
 
     seed_orig_sim = compute_mismatch_similarity_matrix(seed_orig_mat)
-    seed_orig_sim.to_csv("/wuyingfu/github/CrisprPr/analysis/seed_orig_sim_DRICS.csv", index=True)
+    # seed_orig_sim.to_csv("./analysis/seed_orig_sim_DRICS.csv", index=True)
     plot_sim_hotmap(seed_orig_sim, "seed origin", output_path+"origin_seed_bp_sim.png", 0, 1)
     seed_update_sim = compute_mismatch_similarity_matrix(seed_final_mat)
-    seed_update_sim.to_csv("/wuyingfu/github/CrisprPr/analysis/seed_update_sim_DRICS.csv", index=True)
+    # seed_update_sim.to_csv("./analysis/seed_update_sim_DRICS.csv", index=True)
     plot_sim_hotmap(seed_update_sim, "seed update", output_path+"update_seed_bp_sim.png", 0,1)
 
     Nseed_orig_mat = orig_mat.iloc[13:, :]
     Nseed_update_mat = agg_update_mat.iloc[13:-1, :]
 
     Nseed_orig_sim = compute_mismatch_similarity_matrix(Nseed_orig_mat)
-    Nseed_orig_sim.to_csv("/wuyingfu/github/CrisprPr/analysis/Nseed_orig_sim_DRICS.csv", index=True)
+    # Nseed_orig_sim.to_csv("./analysis/Nseed_orig_sim_DRICS.csv", index=True)
     plot_sim_hotmap(Nseed_orig_sim, "Nseed origin", output_path+"origin_Nseed_bp_sim.png", 0.2, 1)
     Nseed_update_sim = compute_mismatch_similarity_matrix(Nseed_update_mat)
-    Nseed_update_sim.to_csv("/wuyingfu/github/CrisprPr/analysis/Nseed_update_sim_DRICS.csv", index=True)
+    # Nseed_update_sim.to_csv("./analysis/Nseed_update_sim_DRICS.csv", index=True)
     plot_sim_hotmap(Nseed_update_sim, "Nseed update", output_path+"update_Nseed_bp_sim.png", 0.2, 1)
 
 

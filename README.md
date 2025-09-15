@@ -15,6 +15,26 @@ CRISPR/Cas9 specificity is critically affected by off-target effects. However, t
 │── README.md                # Project documentation
 
 
+## Requirements
+Our tool has been tested on the following configuration on a Linux machine:<br />
+python = 3.8 <br />
+numpy=1.24.4 <br />
+pandas=2.0.3 <br />
+scikit-learn=1.3.2 <br />
+scipy=1.10.1 <br />
+seaborn=0.13.2 <br />
+torch=1.13.1 <br />
+torchvision=0.14.1 <br />
+
+## Download
+(1) Git Clone
+```
+git clone https://github.com/mochew/CrisprPr.git
+```
+(2) Download the ZIP file from https://github.com/mochew/CrisprPr, then extract it to your desired location.
+```
+unzip CrisprPr-main.zip
+```
 
 ## Create environment and install dependencies:
 
@@ -35,7 +55,7 @@ There are two modes for testing:
 #### 1. Input_file mode
 
 ```
- python main.py --module test --source file --input_file ./CrisprPr/data/HEK293T_test.csv 
+ python main.py --module test --source file --input_file ./CrisprPr/data/test_sample.csv 
 ```
 
 #### 2. Text mode
@@ -47,7 +67,7 @@ There are two modes for testing:
 ### Run analysis module
 
 ```
-python main.py --module analysis --ori_path /CrisprPr/data/matrices/MTP/origin_matrix.npy  --update_path /CrisprPr/data/matrices/MTP  --output_path /CrisprPr/analysis/figs/MTP/  --seed_num 5
+python main.py --module analysis --ori_path ./data/matrices/MTP/origin_matrix.npy  --update_path ./data/matrices/MTP/  --output_path ./analysis/figs/MTP/  --seed_num 5
 ```
 
 **Visualization outputs** will be saved automatically in the specified `--output_path` directory.

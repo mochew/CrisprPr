@@ -32,20 +32,15 @@ def convert_to_tensor(train_list, inter_Val_list, cross_Val_list):
         train_data, train_labels = train_list
         inter_Val_data, inter_Val_labels, inter_Val_sg_list = inter_Val_list
         cross_Val_data, cross_Val_labels, cross_Val_sg_list = cross_Val_list
-    
+
+        train_data = np.concatenate([train_data, inter_Val_data], axis=0)
+        train_labels = np.concatenate([train_labels, inter_Val_labels], axis=0)
+        print(f"combined_train_data: {train_data.shape}, combined_train_labels:{train_labels.shape}")
         train_data = torch.tensor(train_data)
         train_y = torch.tensor(train_labels).long()
         train_dataset = TensorDataset(train_data, train_y)
         train_loader = DataLoader(train_dataset, batch_size=model_config['batch_size'], shuffle=True)
 
-
-
-        inter_Val_sg_list_encoded, inter_Val_sg_dict = sgRNA_2_numid(inter_Val_sg_list)
-        inter_Val_sg_list = torch.tensor(inter_Val_sg_list_encoded, dtype=torch.long)
-        inter_Val_data = torch.tensor(inter_Val_data)
-        inter_Val_y = torch.tensor(inter_Val_labels).long()
-        inter_Val_dataset = TensorDataset(inter_Val_data, inter_Val_y, inter_Val_sg_list)
-        inter_Val_loader = DataLoader(inter_Val_dataset, batch_size=model_config['batch_size'], shuffle=False)
 
         cross_Val_sg_list_encoded, cross_Val_sg_dict = sgRNA_2_numid(cross_Val_sg_list)
         cross_Val_sg_list = torch.tensor(cross_Val_sg_list_encoded, dtype=torch.long)
@@ -54,7 +49,7 @@ def convert_to_tensor(train_list, inter_Val_list, cross_Val_list):
         cross_Val_dataset = TensorDataset(cross_Val_data, cross_Val_y, cross_Val_sg_list)
         cross_Val_loader = DataLoader(cross_Val_dataset, batch_size=model_config['batch_size'], shuffle=False)
 
-        return train_loader, inter_Val_loader, inter_Val_sg_dict, cross_Val_loader, cross_Val_sg_dict
+        return train_loader, cross_Val_loader, cross_Val_sg_dict
 
 
 
@@ -89,7 +84,7 @@ def train_model(Train_data_path, val_data_path, train_model_path, model_type, pr
     print(model)
     model = model.to(device)
     optimizer = optim.Adam(model.parameters(), lr=model_config['Lr']) 
-    train_loader, inter_Val_loader, inter_Val_sg_dict, cross_Val_loader, cross_Val_sg_dict = convert_to_tensor(train_data, inter_Val_data, intra_Val_data)
+    train_loader, cross_Val_loader, cross_Val_sg_dict = convert_to_tensor(train_data, inter_Val_data, intra_Val_data)
     early_stopping = EarlyStopping_prc(patience=model_config['patience'], verbose=True, path=train_model_path)
     epoches = model_config['epoches']
     for epoch in range(epoches):
@@ -109,34 +104,12 @@ def train_model(Train_data_path, val_data_path, train_model_path, model_type, pr
             total_loss += loss.item()
         train_average_loss = total_loss / len(train_loader)
 
-        #内部验证集
-        total_val_loss = 0
-        val_predicted_values = []
-        val_labels = []
-        val_sg_list = []
-        model.eval()
-        for val_batch in inter_Val_loader:
-            inputs, labels, sg_list = val_batch
-            inputs = inputs.to(torch.int8).to(device)
-            labels = labels.to(device)
-            optimizer.zero_grad()
-            
-            outputs = model(inputs)
-            predit_value = outputs.clone()
-            val_loss = criterion(outputs.squeeze(), labels.float())
-            total_val_loss += val_loss.item()
-            
-            val_predicted_values.extend(predit_value.detach().cpu().numpy())
-            val_labels.extend(labels.detach().cpu().numpy())   
-            val_sg_list.extend(sg_list.detach().cpu().numpy())
-        # val_results = evaluate_result(val_labels, val_predicted_values)
-        average_val_loss = total_val_loss / len(inter_Val_loader)
-
         # 外部验证集
         total_cross_val_loss = 0
         cross_val_predicted_values = []
         cross_val_labels = []
         cross_val_sg_list = []
+        model.eval()
         for val_batch in cross_Val_loader:
             inputs, labels, sg_list = val_batch
             inputs = inputs.to(torch.int8).to(device)

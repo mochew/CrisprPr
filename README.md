@@ -55,13 +55,13 @@ There are two modes for testing:
 #### 1. Input_file mode
 
 ```
- python main.py --module test --source file --input_file ./CrisprPr/data/test_sample.csv 
+ python main.py --module test --source file --input_file ./data/test_sample.csv 
 ```
 
 #### 2. Text mode
 
 ```
- python main.py --module test --source text --sg GACTTGTTTTCATTGTTCTCAGG --off CATTTGTTTTCATTGTTCTCTGG
+ python main.py --module test --source single --sg GACTTGTTTTCATTGTTCTCAGG --off CATTTGTTTTCATTGTTCTCTGG
 ```
 
 ### Run analysis module

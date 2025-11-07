@@ -35,15 +35,15 @@ def run_inference(encode_list, label_list, sg_list):
     # M_model = torch.jit.script(M_model)
     # M_model.save(f"/wuyingfu/CrisprPr/models/M_models/new_M_model{str(version)}.pt")
 
-    print(f"(2) Load M_model from ./models/M_models/new_M_model{str(model_seed)}.pt")
-    M_model = torch.jit.load(f"./models/M_models/new_M_model{str(model_seed)}.pt") 
+    print(f"(2) Load M_model from ./models/M_models/M_model_{str(model_seed)}.pth")
+    M_model = torch.jit.load(f"./models/M_models/M_model_{str(model_seed)}.pth") 
     M_model.to(device) 
     M_model.eval()
     print(M_model)
     print("\n")
 
-    print(f"(3) Load D_model from ./models/D_models/new_D_model{str(model_seed)}.pt")
-    D_model = torch.jit.load(f"./models/D_models/new_D_model{str(model_seed)}.pt") 
+    print(f"(3) Load D_model from ./models/D_models/D_model_{str(model_seed)}.pth")
+    D_model = torch.jit.load(f"./models/D_models/D_model_{str(model_seed)}.pth") 
     D_model.to(device)
     D_model.eval()
     print(D_model)
@@ -57,8 +57,8 @@ def run_inference(encode_list, label_list, sg_list):
         batch_inputs = batch_inputs.to(torch.int8).to(device)
         batch_labels = batch_labels.to(device)
 
-        M_outputs, _ = M_model(batch_inputs)
-        D_outputs, _ = D_model(batch_inputs)
+        M_outputs = M_model(batch_inputs)
+        D_outputs = D_model(batch_inputs)
         
         # M_outputs = M_model(batch_inputs)
         # D_outputs = D_model(batch_inputs)

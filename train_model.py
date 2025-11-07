@@ -165,7 +165,7 @@ def train_model(Train_data_path, val_data_path, train_model_path, model_type, pr
 def main():
     
     train_Data_path = "./data/train_data/CHANGEseq/CHANGEseq_encoded.pkl"
-    val_Data_path = "./data/train_data/dataset2_3/SITE-Seq_offTarget_wholeDataset_encode.pkl"
+    val_Data_path = "./data/train_data/ttiss/ttiss_encoded.pkl""
     # train_Model_path = f"./models/Train_models/M_models/new_M_model{model_config['model_seed']}.pt"
     # model_type = "M"
     # prior_matrix_path = "./models/M_models/M1_matrix_dic_D9_new.npy"

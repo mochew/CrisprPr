@@ -18,7 +18,7 @@ def load_matrics(origin_matrix_path, update_matrix_base_path, seed_num):
     # 加载各个模型种子对应的更新矩阵
     update_matrices = []
     for seed in range(seed_num):
-        update_matrix = np.load(f"{update_matrix_base_path}/update_matrix{seed}.npy")
+        update_matrix = np.load(f"{update_matrix_base_path}/matrix{seed}.npy")
         update_matrices.append(update_matrix)
         
     return orig_mat, update_matrices
@@ -183,8 +183,8 @@ def analysis_update(origin_matrix_path, update_matrix_base_path, output_path, se
 
 
 
-# origin_matrix_path = "/wuyingfu/CrisprPr/data/matrices/MTP/origin_matrix.npy"
-# update_matrix_base_path = "/wuyingfu/CrisprPr/data/matrices/MTP"
-# output_path = "/wuyingfu/CrisprPr/analysis/figs/MTP/"
+# origin_matrix_path = "./data/matrices/MTP/origin_matrix.npy"
+# update_matrix_base_path = "./data/matrices/MTP"
+# output_path = "./analysis/figs/MTP/"
 # seed_num = 5
 # analysis_update(origin_matrix_path, update_matrix_base_path, output_path, seed_num)

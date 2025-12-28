@@ -16,6 +16,8 @@ def parse_args():
 
     parser.add_argument("--source", choices=["file", "single"], required=False,
                         help="Specify input source: 'file' to read from a file, 'single' to use inline text input")
+    parser.add_argument("--initialization", choices=["binary", "mean-value"], default="binary",
+                help="Choose a prior initialization strategy")
     parser.add_argument("--input_file", type=str, help="Path to input file (only valid when --source is 'file')")
     parser.add_argument("--sg", type=str, help="Inline sgRNA text content (only valid when --source is 'single')")
     parser.add_argument("--off", type=str, help="Inline off-target text content (only valid when --source is 'single')")
@@ -28,6 +30,7 @@ def parse_args():
 
 
 def load_input(args):
+
     if args.source == "file":
         if not args.input_file:
             raise ValueError("You chose --source file, but didn't provide --input_file.")
@@ -36,7 +39,7 @@ def load_input(args):
             raise FileNotFoundError(f"Input file not found: {file_path}")
         print("(1) Loading data...")
         encode_list, label_list, sg_list = read_pairs_from_csv(file_path)
-        predict_list, label_list, sg_list, test_sg_dict = run_inference(encode_list, label_list, sg_list)
+        predict_list, label_list, sg_list, test_sg_dict = run_inference(encode_list, label_list, sg_list, args.initialization)
 
         result_dict = compute_AUPRC_and_AUROC_scores(label_list, predict_list, sg_list, test_sg_dict)
         output_Multiple(result_dict)
@@ -55,7 +58,7 @@ def load_input(args):
         encode_list =[basepair_2_id_encode(sg, off)]
         label_list = [-1]
         sg_list = [sg[:-3]]
-        predict_list, label_list, sg_list, test_sg_dict = run_inference(encode_list, label_list, sg_list)  
+        predict_list, label_list, sg_list, test_sg_dict = run_inference(encode_list, label_list, sg_list, args.initialization)  
         output_single(sg, off, predict_list)
 
   

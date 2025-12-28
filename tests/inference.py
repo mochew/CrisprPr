@@ -18,32 +18,39 @@ def prepare_training(encode_list, label_list, sg_list):
     return test_loader, Test_sg_dict
 
 def sigmoid(x):
-    """使用NumPy实现sigmoid函数"""
     return 1 / (1 + np.exp(-x))
 
 model_seed = 0
 
-def run_inference(encode_list, label_list, sg_list):
+def run_inference(encode_list, label_list, sg_list, initialization):
 
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     test_loader, test_sg_dict = prepare_training(encode_list, label_list, sg_list)
-    # # 1. 加载模型
+    if initialization == "binary" :
+        print("binary initialization model")
+        M_model_path = f"./models/M_models/M_model_{str(model_seed)}.pth"
+        D_model_path = f"./models/D_models/D_model_{str(model_seed)}.pth"
+    else:
+        print("mean-value initialization model")
+        M_model_path = f"./models/M_mean_models/M_mean_model_{str(model_seed)}.pth"
+        D_model_path = f"./models/D_mean_models/D_mean_model_{str(model_seed)}.pth"
+
     # version = 4
 
     # M_model = torch.load(f"/wuyingfu/CrisprPr/models/M_models/M_model{str(version)}.pth")
     # M_model = torch.jit.script(M_model)
     # M_model.save(f"/wuyingfu/CrisprPr/models/M_models/new_M_model{str(version)}.pt")
 
-    print(f"(2) Load M_model from ./models/M_models/M_model_{str(model_seed)}.pth")
-    M_model = torch.jit.load(f"./models/M_models/M_model_{str(model_seed)}.pth") 
+    print(f"(2) Load M_model from {M_model_path}")
+    M_model = torch.jit.load(M_model_path) 
     M_model.to(device) 
     M_model.eval()
     print(M_model)
     print("\n")
 
-    print(f"(3) Load D_model from ./models/D_models/D_model_{str(model_seed)}.pth")
-    D_model = torch.jit.load(f"./models/D_models/D_model_{str(model_seed)}.pth") 
+    print(f"(3) Load D_model from {D_model_path}")
+    D_model = torch.jit.load(D_model_path) 
     D_model.to(device)
     D_model.eval()
     print(D_model)

@@ -53,12 +53,17 @@ pip install -r requirements.txt
 There are two modes for testing:
 
 #### 1. Input_file mode
-
+--initialization selects the model variant based on how missing values in the prior knowledge were initialized before training:
+binary: model trained with prior knowledge where missing values were filled with 0/1;
+mean-value: model trained with prior knowledge where missing values were filled with the global mean.
 ```
  python main.py --module test --source file  --initialization binary --input_file ./data/test_sample.csv 
 ```
 
 #### 2. Text mode
+--initialization selects the model variant based on how missing values in the prior knowledge were initialized before training:
+binary: model trained with prior knowledge where missing values were filled with 0/1;
+mean-value: model trained with prior knowledge where missing values were filled with the global mean.
 
 ```
  python main.py --module test --source single --initialization binary --sg GACTTGTTTTCATTGTTCTCAGG --off CATTTGTTTTCATTGTTCTCTGG

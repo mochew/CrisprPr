@@ -52,7 +52,9 @@ pip install -r requirements.txt
 
 - **Test sets**  
   `./data/test_data/`
-
+> ⚠️ **Important:**  
+> The dataset files are managed using **Git Large File Storage (Git LFS)**.  
+> Please make sure Git LFS is installed before cloning the repository; otherwise, the dataset files may not be downloaded correctly.
 
 ## 🚀 Usage
 

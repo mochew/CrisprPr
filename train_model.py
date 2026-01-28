@@ -32,7 +32,7 @@ def convert_to_tensor(train_list, inter_Val_list, cross_Val_list):
         train_data, train_labels = train_list
         inter_Val_data, inter_Val_labels, inter_Val_sg_list = inter_Val_list
         cross_Val_data, cross_Val_labels, cross_Val_sg_list = cross_Val_list
-
+    
         train_data = np.concatenate([train_data, inter_Val_data], axis=0)
         train_labels = np.concatenate([train_labels, inter_Val_labels], axis=0)
         print(f"combined_train_data: {train_data.shape}, combined_train_labels:{train_labels.shape}")
@@ -40,7 +40,6 @@ def convert_to_tensor(train_list, inter_Val_list, cross_Val_list):
         train_y = torch.tensor(train_labels).long()
         train_dataset = TensorDataset(train_data, train_y)
         train_loader = DataLoader(train_dataset, batch_size=model_config['batch_size'], shuffle=True)
-
 
         cross_Val_sg_list_encoded, cross_Val_sg_dict = sgRNA_2_numid(cross_Val_sg_list)
         cross_Val_sg_list = torch.tensor(cross_Val_sg_list_encoded, dtype=torch.long)
@@ -104,12 +103,12 @@ def train_model(Train_data_path, val_data_path, train_model_path, model_type, pr
             total_loss += loss.item()
         train_average_loss = total_loss / len(train_loader)
 
+        model.eval()
         # 外部验证集
         total_cross_val_loss = 0
         cross_val_predicted_values = []
         cross_val_labels = []
         cross_val_sg_list = []
-        model.eval()
         for val_batch in cross_Val_loader:
             inputs, labels, sg_list = val_batch
             inputs = inputs.to(torch.int8).to(device)
@@ -137,13 +136,13 @@ def train_model(Train_data_path, val_data_path, train_model_path, model_type, pr
 
 def main():
     
-    train_Data_path = "./data/train_data/CHANGEseq/CHANGEseq_encoded.pkl"
-    val_Data_path = "./data/train_data/ttiss/ttiss_encoded.pkl""
-    # train_Model_path = f"./models/Train_models/M_models/new_M_model{model_config['model_seed']}.pt"
+    train_Data_path = "./data/train_data/CHANGEseq_encoded.pkl"
+    val_Data_path = "./data/val_data/ttiss_encoded.pkl"
+    # train_Model_path = f"./models/M_models/new_M_model{model_config['model_seed']}.pth"
     # model_type = "M"
     # prior_matrix_path = "./models/M_models/M1_matrix_dic_D9_new.npy"
 
-    train_Model_path = f"./models/Train_models/D_models/new_D_model{model_config['model_seed']}.pt" 
+    train_Model_path = f"./models/D_models/new_D_model{model_config['model_seed']}.pth"  
     model_type = "D"
     prior_matrix_path = "./models/D_models/crisot_score_param_new.npy"    
     train_model(train_Data_path, val_Data_path, train_Model_path, model_type, prior_matrix_path)

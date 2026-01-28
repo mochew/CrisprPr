@@ -12,7 +12,7 @@ class Conv2DBN(nn.Module):
         super(Conv2DBN, self).__init__()
         if padding == 'same':
             padding = (kernel_size[0] // 2, kernel_size[1] // 2)
-            print(padding)
+
         else:
             padding = 0
         

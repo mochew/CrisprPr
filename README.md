@@ -3,7 +3,7 @@ A Hybrid-Driven Framework for CRISPR/Cas9 Off-Target Prediction with Analysis of
 
 ## Introduction
 CRISPR/Cas9 specificity is critically affected by off-target effects. However, the intricate patterns of mismatches and their combinations at off-target sites remain difficult to capture, and existing approaches show limited capacity to identify informative features. Here, we present CrisprPr, a hybrid-driven off-target prediction framework that incorporates prior knowledge to improve the characterization of off-target determinants. CrisprPr employs a synchronous updating strategy together with multi-source integration to deliver accurate and stable off-target predictions. The general framework of CrisprPr is as follows：
-<img src="The framework of CrisprPr.png"  />  
+<img src="CrisprPr.png"  />  
 ## Project Structure
 │── main.py                  # Main entry point (inference & analysis) <br />
 │── models/                  # Model definitions (e.g., M_model, F_model) <br />

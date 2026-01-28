@@ -43,7 +43,15 @@ conda create -n CrisprPr python=3.8
 conda activate CrisprPr
 pip install -r requirements.txt
 ```
+## Dataset Overview
+- **Training set (CHANGEseq)**  
+  `./data/train_data/`
 
+- **Validation set (TTISS-CT)**  
+  `./data/val_data/`
+
+- **Test sets**  
+  `./data/test_data/`
 
 
 ## 🚀 Usage
